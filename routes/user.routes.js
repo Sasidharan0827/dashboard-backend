@@ -7,4 +7,6 @@ router.put("/update/:userId", usercontroller.updateUser);
 router.delete("/delete/:userId", usercontroller.deleteUser);
 router.get("/list", usercontroller.userList);
 router.get("/get/:userId", usercontroller.getUserById);
+router.get("/search", usercontroller.searchUsers);
+
 module.exports = router;

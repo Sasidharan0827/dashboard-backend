@@ -142,6 +142,46 @@ const getUserById = async (req, res) => {
     res.status(500).json({ msg: "Internal Server Error" });
   }
 };
+
+const searchUsers = async (req, res) => {
+  try {
+    const { query } = req.query; // Change this line
+    if (!query) {
+      return res.status(400).json({
+        success: false,
+        message: "Search query is required as a query parameter.",
+      });
+    }
+    // Rest of your code remains the same
+    const users = await User.find({
+      $or: [
+        { firstName: { $regex: query, $options: "i" } },
+        { lastName: { $regex: query, $options: "i" } },
+        { email: { $regex: query, $options: "i" } },
+        { phone: { $regex: query, $options: "i" } },
+      ],
+    });
+    if (users.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No users found matching your search.",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      count: users.length,
+      data: users,
+    });
+  } catch (error) {
+    console.error("Search error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while searching for users.",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -149,4 +189,5 @@ module.exports = {
   deleteUser,
   userList,
   getUserById,
+  searchUsers,
 };
