@@ -9,7 +9,10 @@ const approute = require("./routes/app.routes");
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
-const allowedOrigins = ["http://localhost:4200"];
+const allowedOrigins = [
+  "http://localhost:4200",
+  "https://dashboars01.netlify.app",
+];
 app.use(
   cors({
     origin: allowedOrigins,
